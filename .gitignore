@@ -20,6 +20,7 @@ ignore/
 *.xls
 *.prj
 *.class
+*.pyc
 /projects/scene/nbproject/private/
 /projects/SimPLE/nbproject/private/
 /projects/User/nbproject/private/
