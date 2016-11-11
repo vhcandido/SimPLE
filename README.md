@@ -35,8 +35,9 @@
  </pre>
 
  To run the SimPLE aplication use the following command line:
- 
- >> java -jar SimPLE.jar -file sim-example.txt
+ <pre>
+ \>\> java -jar SimPLE.jar -file sim-example.txt
+ </pre>
  
  There hare too several optional parameters, each argument is composeds 
  by pair [-name] [value], the full list is discribed bellow:
