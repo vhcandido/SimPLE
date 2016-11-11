@@ -1,0 +1,27 @@
+#ignorar todos os diretorios listados abaixo em qualquer subdiretorio
+build/
+dist/
+trash/
+ignore/
+#ignorar todos os arquivos por extensao
+*~
+*.rar
+*.zip
+*.o
+*.tpl
+*.pof
+*.sgl
+*.tpl
+*.err
+*.log
+*.lp
+*.csv
+*.xlsx
+*.xls
+*.prj
+*.class
+/projects/scene/nbproject/private/
+/projects/SimPLE/nbproject/private/
+/projects/User/nbproject/private/
+/projects/User/winhash/private/
+/projects/User/LP/private/

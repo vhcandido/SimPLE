@@ -1,0 +1,29 @@
+module
+	name = [robot];
+	cmd  = [E:\ePhD\SAOTD\SimPLE\modules\robot_linear\robot.exe];
+	dir  = [E:\ePhD\SAOTD\SimPLE\modules\robot_linear\];
+end
+
+module
+	name = [winhash];
+	cmd  = [java -jar winhash.jar];
+	dir  = [E:\ePhD\SAOTD\SimPLE\modules\];
+end
+
+module
+	name = [controler];
+	cmd  = [java -jar LP.jar];
+	dir  = [E:\ePhD\SAOTD\SimPLE\modules\LP\dist\];
+end
+
+module
+	name = [scene];
+	cmd  = [java -jar scene.jar];
+	dir  = [E:\ePhD\SAOTD\SimPLE\modules\];
+end
+
+module
+	name = [gps];
+	cmd  = [python gps.py];
+	dir  = [E:\ePhD\SAOTD\SimPLE\modules\gps\];
+end
