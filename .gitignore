@@ -27,3 +27,7 @@ ignore/
 /projects/winhash/private/
 /projects/LP/private/
 /modules/controlers/rocket/keyboard/nbproject/private/
+/modules/controlers/linear/LP/nbproject/private/
+/modules/controlers/linear/RHC/nbproject/private/
+/modules/controlers/linear/RLP/nbproject/private/
+/modules/controlers/linear/MPC/nbproject/private/

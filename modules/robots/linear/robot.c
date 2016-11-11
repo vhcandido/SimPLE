@@ -148,7 +148,7 @@ void paintRobot(){
         }
 
         //------------------ draw the robot body  -----------------
-        paintRect("body", 0, 0, body_size/2, body_size/2, LIGHT_GRAY, BLACK);
+        paintOval("body", 0, 0, body_size/2, body_size/2, LIGHT_GRAY, BLACK);
 
         //translate back to original place
         setTranslate("body", -state[px], -state[py]);
