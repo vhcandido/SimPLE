@@ -1,5 +1,4 @@
 # SimPLE
-SimPLE (Simulation Process with Less Encode)
 
  SimPLE (Simulation Process with Less Encode) is a aplication used to 
  intercomunicate other aplications using a simple hashtable(key,value) 
