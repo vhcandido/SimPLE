@@ -39,7 +39,7 @@
  \>\> java -jar SimPLE.jar -file sim-example.txt
  </pre>
  
- There hare too several optional parameters, each argument is composeds 
+ There are too several optional parameters, each argument is composeds 
  by pair [-name] [value], the full list is discribed bellow:
  
  <pre>
