@@ -6,8 +6,8 @@ end
 
 module
 	name = [controler];
-	cmd  = [java -jar controler.jar];
-	dir  = [E:\Dropbox\GitHub\SimPLE\modules\robots\rocket\];
+	cmd  = [java -jar keyboard.jar];
+	dir  = [E:\Dropbox\GitHub\SimPLE\modules\controlers\rocket\];
 end
 
 module

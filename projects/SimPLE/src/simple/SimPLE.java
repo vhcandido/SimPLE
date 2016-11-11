@@ -28,7 +28,7 @@ import java.util.regex.PatternSyntaxException;
  * the SimPLE only comunicate by string using the standard input/output.
  * <br><br>
  * To write any information on global memory the childs needs print the 
- * following informations on standard output:exit
+ * following informations on standard output:
  * 
  * <pre>
  * |--------[general example in C]--------------|

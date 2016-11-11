@@ -24,5 +24,6 @@ ignore/
 /projects/scene/nbproject/private/
 /projects/SimPLE/nbproject/private/
 /projects/User/nbproject/private/
-/projects/User/winhash/private/
-/projects/User/LP/private/
+/projects/winhash/private/
+/projects/LP/private/
+/modules/controlers/rocket/keyboard/nbproject/private/
