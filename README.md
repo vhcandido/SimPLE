@@ -56,3 +56,9 @@
   (\*) (usefull only to best prints visualization)
  </pre>
  
+### First Setup
+ First donwload the last release version of SimPLE, [Latest release](https://github.com/marcio-da-silva-arantes/SimPLE/releases/latest). Now extract it to a most possible simple path, we sujest as sample for Windows on C:/SimPLE/. On this directory there are severals simulations test files with names like simXX-XXX.txt we sujest to use the [Notepad++](https://notepad-plus-plus.org/) to open and edit this files for Windows or [Geany](https://www.geany.org/) for Linux. To perform the first setup you need to change the paths from E:/Dropbox/GitHub/SimPLE/ to C:/SimPLE/ as example on this files before use them. Note that this paths point to the exacly codes that will run, some times this is sufficient condition to run the SimPLE.jar aplication as explained above. But to avoid some portability problems we recomend to compile again each of this codes to your computer, to do that go to each module poited by the simXX-XXX.txt file and compile again the code.
+ 
+### Getting Started
+ TODO...
+ 
