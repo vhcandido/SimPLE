@@ -1,25 +1,3 @@
-# SimPLE
-
- SimPLE (Simulation Process with Less Encode) is a aplication used to 
- intercomunicate other aplications using a simple hashtable(key,value) 
- to map the information globaly. 
- Each child aplication can be programmed on any programming language, 
- the SimPLE only comunicate by string using the standard input/output.
- <br><br>
- To write any information on global memory the childs needs print the 
- following informations on standard output:exit
- 
- <pre>
- |--------[general example in C]--------------|
- | 1)  printf("write.%s\n", key);             |
- | 2)  printf("%s\n", value);                 |
- | 3)  flush(stdout);                         |
- |--------[exemple of termometer]-------------|
- | 1)  printf("write.myApp.temperature\n");   |
- | 2)  printf("%f\n", temperature);           |
- | 3)  flush(stdout);                         |
- |--------------------------------------------|
- </pre>
  To read any information from global memory the childs needs print and 
  read the following informations on standard output/input:
  <pre>
@@ -56,3 +34,8 @@
   (\*) (usefull only to best prints visualization)
  </pre>
  
+### First Setup
+ First donwload the last release version of SimPLE, [Latest release](https://github.com/marcio-da-silva-arantes/SimPLE/releases/latest). Now extract it to a most possible simple path, we sujest as sample for Windows on C:/SimPLE/. On this directory there are severals simulations test files with names like simXX-XXX.txt we sujest to use the [Notepad++](https://notepad-plus-plus.org/) to open and edit this files for Windows or [Geany](https://www.geany.org/) for Linux. To perform the first setup you need to change the paths from E:/Dropbox/GitHub/SimPLE/ to C:/SimPLE/ as example on this files before use them. Note that this paths point to the exacly codes that will run, some times this is sufficient condition to run the SimPLE.jar aplication as explained above. But to avoid some portability problems we recomend to compile again each of this codes to your computer, to do that go to each module poited by the simXX-XXX.txt file and compile again the code.
+ 
+### Getting Started
+ TODO...
