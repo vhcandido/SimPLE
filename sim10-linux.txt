@@ -1,0 +1,22 @@
+module
+	name = [robot];
+	cmd  = [/media/marcio/Work/Dropbox/GitHub/SimPLE/modules/robots/linear/robot];
+	dir  = [/media/marcio/Work/Dropbox/GitHub/SimPLE/modules/robots/linear/];
+end
+module
+	name = [controler];
+	cmd  = [./controler];
+	dir  = [/media/marcio/Work/Dropbox/GitHub/SimPLE/modules/robots/linear/];
+end
+
+module
+	name = [winhash];
+	cmd  = [java -jar winhash.jar];
+	dir  = [/media/marcio/Work/Dropbox/GitHub/SimPLE/modules/];
+end
+
+module
+	name = [scene];
+	cmd  = [java -jar scene.jar];
+	dir  = [/media/marcio/Work/Dropbox/GitHub/SimPLE/modules/];
+end

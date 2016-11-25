@@ -47,6 +47,7 @@ void loop(){
     //printf("ola mundo novo %d\n", n++);
 
     readControl();
+    //double dt = DELAY/1000.0;
     double dt = time_elapsed();
 
     nextState(dt);

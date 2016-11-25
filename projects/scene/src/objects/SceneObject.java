@@ -31,7 +31,7 @@ public abstract class SceneObject {
     public abstract void paint(Graphics2DReal gr);
 
     public static int Unit(double x){
-        return (int)(x*100+0.5);
+        return (int)(x*100 + (x<0 ? -0.5 : +0.5));
     }
     
     public void setDraw(Color draw) {
@@ -39,5 +39,12 @@ public abstract class SceneObject {
     }
     public void setFill(Color fill) {
         this.fill = fill;
+    }
+    
+    public static void main(String[] args) {
+        double x = 0.011;
+        System.out.println(Unit(x));
+        System.out.println(Unit(-x));
+        
     }
 }

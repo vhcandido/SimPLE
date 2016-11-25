@@ -1,1 +1,1 @@
-java -jar SimPLE.jar -file ./modules5.txt -fast true
+java -jar SimPLE.jar -file ./sim01-linear.txt -fast true

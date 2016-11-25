@@ -1,8 +1,19 @@
+/*
+#-----------------------------------------------------------------
+#   Project SimPLE (Simulation Process with Less Encode)
+#-----------------------------------------------------------------
+#   Lib module.h :
+#   Generic procedures and function to simplifier the communication
+#	between different applications
+#-----------------------------------------------------------------
+*/
+
 #ifndef MODULE
 #define MODULE
 
-#include <stdio.h>
+#include<stdio.h>
 #include<time.h>
+#include<stdlib.h>
 
 #ifdef WIN32
 #include <windows.h>
@@ -28,7 +39,10 @@ int readInt(const char* path);
 void lock();
 void unlock();
 
+double time_mark = -1;
 int main(){
+	time_mark = time_sec();
+
     writeInt("started", 0);
     writeInt("loops", 0);
 
@@ -52,14 +66,20 @@ void sleep_ms(int milliseconds){
     #endif // win32
 }
 double time_sec(){
-    return (double)(clock()) / 1000.0;
+	#ifdef WIN32
+	return (double)(clock()) / CLOCKS_PER_SEC;
+	#else
+	struct timespec spec;
+    clock_gettime(CLOCK_REALTIME, &spec);
+    return spec.tv_sec+spec.tv_nsec/1e9;
+	#endif
 }
-double time_mark = -1;
+
 double time_elapsed(){
     double now = time_sec();
     double elapsed;
     if(time_mark<0){
-        elapsed = now;
+        elapsed = 1e-6;
     }else{
         elapsed = now-time_mark;
     }
