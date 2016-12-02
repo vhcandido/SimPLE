@@ -1,23 +1,23 @@
 module
 	name = [robot];
-	cmd  = [E:\Dropbox\GitHub\SimPLE\modules\robots\rocket\robot.exe];
-	dir  = [E:\Dropbox\GitHub\SimPLE\modules\robots\rocket\];
+	cmd  = [/home/vhcandido/Documents/usp/2o_semestre/path_planning/SimPLE/modules/robots/rocket/robot];
+	dir  = [/home/vhcandido/Documents/usp/2o_semestre/path_planning/SimPLE/modules/robots/rocket/];
 end
 
 module
 	name = [controler];
 	cmd  = [java -jar keyboard.jar];
-	dir  = [E:\Dropbox\GitHub\SimPLE\modules\controlers\rocket\];
+	dir  = [/home/vhcandido/Documents/usp/2o_semestre/path_planning/SimPLE/modules/controlers/rocket/];
 end
 
 module
 	name = [winhash];
 	cmd  = [java -jar winhash.jar];
-	dir  = [E:\Dropbox\GitHub\SimPLE\modules\];
+	dir  = [/home/vhcandido/Documents/usp/2o_semestre/path_planning/SimPLE/modules/];
 end
 
 module
 	name = [scene];
 	cmd  = [java -jar scene.jar];
-	dir  = [E:\Dropbox\GitHub\SimPLE\modules\];
+	dir  = [/home/vhcandido/Documents/usp/2o_semestre/path_planning/SimPLE/modules/];
 end
