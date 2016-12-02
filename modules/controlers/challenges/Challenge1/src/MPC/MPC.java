@@ -5,11 +5,14 @@
  */
 package MPC;
 
+import Main.Hyperplane;
 import SimPLE.Module;
 import SimPLE.Scene;
 import ilog.concert.IloException;
 import java.awt.Color;
 import java.awt.geom.Point2D;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -17,7 +20,7 @@ import java.awt.geom.Point2D;
  */
 public class MPC extends Module{
     private final double Mission_Time = 10.0;   //6.0
-    private final int Mission_Steps = 10;
+    private final int Mission_Steps = 30;
     
     
     
@@ -27,6 +30,8 @@ public class MPC extends Module{
         new Point2D.Double(8, 6),
         new Point2D.Double(8, -2),
     };
+    
+    private List<Point2D[]> obstacles = new ArrayList<>();
     
     private final Scene scene;
     public MPC(String ID) throws IloException {
@@ -42,10 +47,33 @@ public class MPC extends Module{
     public void start() throws Throwable {
         writeDbl("ax", 0.0);
         writeDbl("ay", 0.0);
+	
+	obstacles.add(
+	    new Point2D[]{
+		new Point2D.Double(2, -1),
+		new Point2D.Double(1, -1),
+		new Point2D.Double(1, 2.1),
+		new Point2D.Double(2, 2.1),
+	    }
+	);
         
         scene.beginScene(500);
             scene.setColor("safe", Color.GREEN);
             scene.drawPolygon("safe", points);
+	    for(Point2D[] obstacle:obstacles) {
+		scene.drawPolygon("safe", obstacle);
+		Hyperplane hyper[] = Hyperplane.hyperplansFrom(false, obstacle);
+		for(int i=0; i<obstacle.length; ++i) {
+		    int k = (i+1) % obstacle.length;
+		    double mx = (obstacle[i].getX() + obstacle[k].getX())/2;
+		    double my = (obstacle[i].getY() + obstacle[k].getY())/2;
+		    double nx = mx + hyper[i].a[0];
+		    double ny = my + hyper[i].a[1];
+		    
+		    scene.setColor("safe", Color.BLUE);
+		    scene.drawLine("safe", mx, my, nx, ny);
+		}
+	    }
             
             for(int n=0; n<goals.length; n++){
                 scene.setColor("goals", Color.RED);
@@ -79,7 +107,7 @@ public class MPC extends Module{
         double vx = readDbl("robot.vx");
         double vy = readDbl("robot.vy");
         
-        ModelLP model = new ModelLP(2, Mission_Time, Mission_Steps, 1.0, points);
+        ModelLP model = new ModelLP(2, Mission_Time, Mission_Steps, 1.0, obstacles, points);
         model.start_conditions(px, py, vx, vy);
         model.end_conditions(goals[n]);
         
