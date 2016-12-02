@@ -28,6 +28,8 @@ double belt[2];
 //in milliseconds
 #define DELAY   (10)
 
+#define max(a,b) (a>b ? a : b)
+
 void writeState();
 void readControl();
 void paintTrace();
