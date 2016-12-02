@@ -23,6 +23,7 @@ Desafio*/
 *.prj
 *.class
 *.pyc
+*.swp
 /projects/scene/nbproject/private/
 /projects/SimPLE/nbproject/private/
 /projects/User/nbproject/private/
