@@ -4,23 +4,17 @@ import ilog.concert.*;
 import ilog.cplex.IloCplex;
 
 import java.util.Arrays;
-import java.util.Random;
 
 class TSP {
 
-    static void solve(int n, Random random){
-        double[] Xpos = new double[n];
-        double[] Ypos = new double[n];
-
-        for(int i = 0; i < n; i++){
-            Xpos[i] = random.nextDouble() * 100;
-            Ypos[i] = random.nextDouble() * 100;
-	    System.out.println(Xpos[i] + " - " + Ypos[i]);
-        }
-        double[][] c = new double[n][n];
-        for (int i = 0; i < n; i++){
-            for(int j = 0; j < n; j++){
-                c[i][j] = distance(Xpos[i], Ypos[i], Xpos[j], Ypos[j]);
+    static void solve(double[][] goals){
+	int n = goals.length;
+	double[][] c = new double[n][n];
+	for (int i = 0; i < n-1; i++){
+	    c[i][i] = 0;
+            for(int j = i+1; j < n; j++){
+                c[i][j] = distance(goals[i][0], goals[i][1], goals[j][0], goals[j][1]);
+		c[j][i] = c[i][j];
             }
         }
         // model
@@ -99,12 +93,28 @@ class TSP {
             // end
             cplex.end();
 
+	    double[][] ord_goals = new double[n][4];
+	    ord_goals[0] = goals[0];
+	    int idx = 0;
+	    for(int i=0; i < goals.length-1; ++i) {
+		for(int j=1; j < goals.length; ++j) {
+		    if(xResult[idx][j] == 1) {
+			idx = j;
+			ord_goals[j] = goals[idx];
+			break;
+		    }
+		}
+	    }
+	    for(double[] p: ord_goals) {
+		System.out.println(Arrays.toString(p));
+	    }
+
         } catch (IloException e) {
             e.printStackTrace();
         }
     }
 
     private static double distance(double xi, double yi, double xj, double yj){
-        return Math.sqrt(Math.pow(xi - xj, 2) + Math.pow(yi - yj, 2));
+	return Math.sqrt(Math.pow(xi - xj, 2) + Math.pow(yi - yj, 2));
     }
 }
