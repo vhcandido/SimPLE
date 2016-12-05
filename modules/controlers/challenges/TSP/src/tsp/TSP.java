@@ -10,7 +10,7 @@ class TSP {
     static void solve(double[][] goals){
 	int n = goals.length;
 	double[][] c = new double[n][n];
-	for (int i = 0; i < n-1; i++){
+	for (int i = 0; i < n; i++){
 	    c[i][i] = 0;
             for(int j = i+1; j < n; j++){
                 c[i][j] = distance(goals[i][0], goals[i][1], goals[j][0], goals[j][1]);
@@ -99,8 +99,9 @@ class TSP {
 	    for(int i=0; i < goals.length-1; ++i) {
 		for(int j=1; j < goals.length; ++j) {
 		    if(xResult[idx][j] == 1) {
+			System.out.println("Path " + (i+1) +": "+ idx + " -> " + j);
 			idx = j;
-			ord_goals[j] = goals[idx];
+			ord_goals[i+1] = goals[idx];
 			break;
 		    }
 		}
