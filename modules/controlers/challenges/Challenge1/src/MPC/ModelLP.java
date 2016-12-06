@@ -25,7 +25,7 @@ public class ModelLP {
     protected final IloNumVar u[][];
     protected final IloNumVar x[][];
     protected final IloNumVar p;
-    protected IloNumVar z[][];
+    protected IloNumVar z[][][];
     
     public void start_conditions(double ...state) throws IloException{
         // Initial conditions: x(0) = start
@@ -111,27 +111,27 @@ public class ModelLP {
                 cplex.addLe(expr, cplex.sum(h[i].b, p), "sr("+n+","+i+")");
             }
         }
-	
+	z = new IloNumVar[obstacles.size()][N][];
 	// obstacles constraints
 	for(int r=0; r<obstacles.size(); ++r) {
 	    Hyperplane obstacle[] = Hyperplane.hyperplansFrom(D>2, obstacles.get(r));
-	    z = new IloNumVar[N][obstacle.length];
 	    for(int n=0; n<N; n++){
 		IloNumExpr z_sum = null;
+		z[r][n] = new IloNumVar[obstacle.length];
 		for(int i=0; i<obstacle.length; ++i) {
 		    //h(i) x(n) >= b - M(1-z(n,r))
-		    z[n][i] = cplex.boolVar("z("+n+","+r+","+i+")");
+		    z[r][n][i] = cplex.boolVar("z("+r+","+n+","+i+")");
 		    if(z_sum == null) {
-			z_sum = z[n][i];
+			z_sum = z[r][n][i];
 		    } else {
-			z_sum = cplex.sum(z_sum, z[n][i]);
+			z_sum = cplex.sum(z_sum, z[r][n][i]);
 		    }
 		    IloNumExpr expr = obstacle[i].scalProd(cplex, x[n]);
-		    IloNumExpr m = cplex.prod(10000, cplex.sum(-1, z[n][i]));
-		    cplex.addGe(expr, cplex.sum(obstacle[i].b, m), "obc("+n+","+r+","+i+")");
+		    IloNumExpr m = cplex.prod(10000, cplex.sum(-1, z[r][n][i]));
+		    cplex.addGe(expr, cplex.sum(obstacle[i].b, m), "obc("+r+","+n+","+i+")");
 		    System.out.println(obstacle[i].b);
 		}
-		cplex.addGe(z_sum, 1, "sum("+n+","+r+")");
+		cplex.addGe(z_sum, 1, "sum("+r+","+n+")");
 	    }
         }
         cplex.exportModel("./model.lp");
