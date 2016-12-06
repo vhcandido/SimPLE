@@ -13,6 +13,7 @@ import java.awt.Color;
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import java.util.List;
+import tsp.TSP;
 
 /**
  *
@@ -21,8 +22,6 @@ import java.util.List;
 public class MPC extends Module{
     private final double Mission_Time = 10.0;   //6.0
     private final int Mission_Steps = 30;
-    
-    
     
     private final Point2D[] points = new Point2D[]{
         new Point2D.Double(-2, -2),
@@ -48,6 +47,9 @@ public class MPC extends Module{
         writeDbl("ax", 0.0);
         writeDbl("ay", 0.0);
 	
+	// Order goals with TSP
+	goals = TSP.solve(goals);
+
 	obstacles.add(
 	    new Point2D[]{
 		new Point2D.Double(2, -1),
@@ -83,7 +85,7 @@ public class MPC extends Module{
         scene.endScene();
     }
     
-    private final double goals[][] = new double[][]{
+    private double goals[][] = new double[][]{
         {0, 0, 0, 0},
         {6, 0, 0, 1},
         {6, 4, -1, 0},
