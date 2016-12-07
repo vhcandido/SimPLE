@@ -24,7 +24,7 @@ public class ModelLP {
     
     protected final IloNumVar u[][];
     protected final IloNumVar x[][];
-    protected final IloNumVar p;
+    protected final IloNumVar pen;
     protected IloNumVar z[][][];
     
     public void start_conditions(double ...state) throws IloException{
@@ -65,7 +65,7 @@ public class ModelLP {
             }
         }
         
-        p = cplex.numVar(0, Double.POSITIVE_INFINITY, "penality");
+        pen = cplex.numVar(0, Double.POSITIVE_INFINITY, "penality");
         
         IloNumExpr obj = null;
         for(int n=0; n<N-1; n++){
@@ -77,7 +77,7 @@ public class ModelLP {
                 }
             }
         }
-        obj = cplex.sum(obj, cplex.prod(1000, p));
+        obj = cplex.sum(obj, cplex.prod(1000, pen));
         cplex.addMinimize(obj);
         
         // Dynamic equations: x(n+1) = A x(n) + B u(n)
@@ -108,7 +108,7 @@ public class ModelLP {
             for(int i=0; i<h.length; i++){
                 //h(i) x(n) <= b
                 IloNumExpr expr = h[i].scalProd(cplex, x[n]);
-                cplex.addLe(expr, cplex.sum(h[i].b, p), "sr("+n+","+i+")");
+                cplex.addLe(expr, cplex.sum(h[i].b, pen), "sr("+n+","+i+")");
             }
         }
 	z = new IloNumVar[obstacles.size()][N][];
