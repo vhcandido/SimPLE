@@ -26,6 +26,7 @@ public class ModelLP {
     protected final IloNumVar x[][];
     protected final IloNumVar pen;
     protected IloNumVar z[][][];
+    protected IloNumVar p[][][];
     
     public void start_conditions(double ...state) throws IloException{
         // Initial conditions: x(0) = start
@@ -134,6 +135,32 @@ public class ModelLP {
 		cplex.addGe(z_sum, 1, "sum("+r+","+n+")");
 	    }
         }
+
+	// Corner cutting constraints
+	p = new IloNumVar[z.length][z[0].length-1][z[0][0].length];
+	for(int r=0; r<z.length; ++r) {
+	    for(int n=1; n<z[r].length-1; n++){
+		IloNumExpr p_sum = null;
+		for(int i=0; i<z[r][n].length; ++i) {
+		    p[r][n-1][i] = cplex.numVar(0, Double.POSITIVE_INFINITY, "p("+r+","+n+","+i+")");
+		    // sum_i p(r,n,i) >= 1 \forall r,n
+		    if(p_sum == null) {
+			p_sum = p[r][n-1][i];
+		    } else {
+			p_sum = cplex.sum(p_sum, p[r][n-1][i]);
+		    }
+		    // p(r,n,i) >= z(r,n,i) + p(r,n-1,i) - 1
+		    IloNumExpr expr = cplex.sum(z[r][n][i], z[r][n-1][i]);
+		    expr = cplex.sum(expr, -1);
+		    cplex.addGe(p[r][n-1][i], expr, "corner1("+r+","+n+","+i+")");
+		    // p(r,n,i) <= z(r,n,i)
+		    cplex.addLe(p[r][n-1][i], z[r][n][i], "corner2("+r+","+n+","+i+")");
+		    // p(r,n,i) <= z(r,n-1,i)
+		    cplex.addLe(p[r][n-1][i], z[r][n-1][i], "corner3("+r+","+n+","+i+")");
+		}
+		cplex.addGe(p_sum, 1, "sump("+r+","+n+")");
+	    }
+	}
         cplex.exportModel("./model.lp");
     }
  
