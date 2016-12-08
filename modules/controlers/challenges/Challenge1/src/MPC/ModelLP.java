@@ -47,15 +47,15 @@ public class ModelLP {
         }
     }
     
-    private void sigmaMatrix(double delta) {
+    private void sigmaMatrix(double x0_var, double dt) {
 	double[][] sigma0 = new double[][]{
-	    {0.0003, 0, 0, 0},
-	    {0, 0.0003, 0, 0},
-	    {0, 0, 0, 0},
-	    {0, 0, 0, 0},
+	    {x0_var, 0, 0, 0},
+	    {0, x0_var, 0, 0},
+	    {0, 0, x0_var, 0},
+	    {0, 0, 0, x0_var},
 	};
 	
-	double[][] A = A(this.D, delta);
+	double[][] A = A(this.D, dt);
 	
 	this.sigma = new ArrayList<>();
 	this.sigma.add(sigma0);
@@ -109,13 +109,12 @@ public class ModelLP {
     }
     
     private double c_in(int n, double[] a) {
-	for(int i=0; i<a.length; ++i) { a[i] *= 2; }
 	double[][] h = new double[][]{a};
 	double c;
 	double[][] hs = matMultiply(h, sigma.get(n));
 	double[][] transp = matTranspose(h);
 	c = matMultiply(hs, transp)[0][0];
-	c = Math.sqrt(c) * this.erfInverse;
+	c = Math.sqrt(2*c) * this.erfInverse;
 	return c;
     }
     
@@ -124,8 +123,8 @@ public class ModelLP {
         this.N = N;
 	this.Delta = Delta;
 	double delta = this.Delta/(N*obstacles.size());
-	this.erfInverse = erfInv(1 - 2*delta);
-	sigmaMatrix(delta);
+	this.erfInverse = erfInv(1 - 2*delta)/10;
+	sigmaMatrix(0.03, 0);
 
         // Create the enviroment
         cplex = new IloCplex();
