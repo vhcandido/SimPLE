@@ -1,0 +1,23 @@
+module
+	name = [robot];
+	cmd  = [/home/vhcandido/Documents/usp/2o_semestre/path_planning/SimPLE/modules/robots/linear/robot];
+	dir  = [/home/vhcandido/Documents/usp/2o_semestre/path_planning/SimPLE/modules/robots/linear/];
+end
+
+module
+	name = [controler];
+	cmd  = [java -Djava.library.path=/opt/ibm/ILOG/CPLEX_Studio_Community1263/cplex/bin/x86-64_linux -jar Challenge4.jar];
+	dir  = [/home/vhcandido/Documents/usp/2o_semestre/path_planning/SimPLE/modules/controlers/challenges/Challenge4/dist/];
+end
+
+module
+	name = [winhash];
+	cmd  = [java -jar winhash.jar];
+	dir  = [/home/vhcandido/Documents/usp/2o_semestre/path_planning/SimPLE/modules/];
+end
+
+module
+	name = [scene];
+	cmd  = [java -jar scene.jar];
+	dir  = [/home/vhcandido/Documents/usp/2o_semestre/path_planning/SimPLE/modules/];
+end
