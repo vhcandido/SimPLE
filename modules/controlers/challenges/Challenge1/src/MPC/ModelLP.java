@@ -208,7 +208,8 @@ public class ModelLP {
 		    }
 		    IloNumExpr expr = obstacle[i].scalProd(cplex, x[n]);
 		    IloNumExpr m = cplex.prod(10000, cplex.sum(-1, z[r][n][i]));
-		    double c = c_in(n, zeroFill(obstacle[i].a));
+		    //double c = c_in(n, zeroFill(obstacle[i].a));
+		    double c = 0;
 		    cplex.addGe(expr, cplex.sum(obstacle[i].b + c, m), "obc("+r+","+n+","+i+")");
 		}
 		cplex.addGe(z_sum, 1, "sum("+r+","+n+")");
