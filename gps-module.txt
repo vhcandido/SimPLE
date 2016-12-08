@@ -1,0 +1,6 @@
+
+module
+	name = [gps];
+	cmd  = [python gps.py];
+	dir  = [/home/vhcandido/Documents/usp/2o_semestre/path_planning/SimPLE/modules/gps/];
+end
