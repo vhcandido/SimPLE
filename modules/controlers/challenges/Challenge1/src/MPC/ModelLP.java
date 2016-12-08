@@ -11,8 +11,10 @@ import ilog.concert.IloNumVar;
 import ilog.cplex.IloCplex;
 import java.awt.geom.Point2D;
 import Main.Hyperplane;
+import java.util.ArrayList;
 import java.util.List;
 
+import static org.apache.commons.math3.special.Erf.erfInv;
 /**
  *
  * @author marci
@@ -21,6 +23,9 @@ public class ModelLP {
     public final IloCplex cplex;
     public final int D;
     public final int N;
+    private final double Delta;
+    private List<double[][]> sigma;
+    private final double erfInverse;
     
     protected final IloNumVar u[][];
     protected final IloNumVar x[][];
@@ -41,11 +46,87 @@ public class ModelLP {
             x[x.length-1][d].setUB(state[d]);
         }
     }
-
     
-    public ModelLP(int D, double time, int N, double Umax, List<Point2D[]> obstacles, Point2D... points) throws IloException{
+    private void sigmaMatrix(double delta) {
+	double[][] sigma0 = new double[][]{
+	    {0.0003, 0, 0, 0},
+	    {0, 0.0003, 0, 0},
+	    {0, 0, 0, 0},
+	    {0, 0, 0, 0},
+	};
+	
+	double[][] A = A(this.D, delta);
+	
+	this.sigma = new ArrayList<>();
+	this.sigma.add(sigma0);
+	for(int n=1; n<N; ++n) {
+	    double[][] sigmaSum = matMultiply(A, this.sigma.get(n-1));
+	    double[][] transp = matTranspose(A);
+	    sigmaSum = matMultiply(sigmaSum, transp);
+	    sigmaSum = matSum(sigmaSum, sigma0);
+	    this.sigma.add(sigmaSum);
+	}
+    }
+    
+    private double[][] matTranspose(double[][] m) {
+	double[][] ret = new double[m[0].length][m.length];
+	for(int i=0; i<m.length; ++i) {
+	    for(int j=0; j<m[0].length; ++j) {
+		ret[j][i] = m[i][j];
+	    }
+	}
+	return ret;
+    }
+    
+    private double[][] matSum(double[][] m1, double[][] m2) {
+	double[][] ret = new double[m1.length][m1[0].length];
+	for(int i=0; i<m1.length; ++i) {
+	    for(int j=0; j<m1[0].length; ++j) {
+		ret[j][i] = m1[i][j] + m2[i][j];
+	    }
+	}
+	return ret;
+    }
+    
+    private double[][] matMultiply(double[][] m1, double[][] m2) {
+	double[][] ret = new double[m1.length][m2[0].length];
+	for(int i=0; i<m1.length; ++i) {
+	    for(int j=0; j<m2[0].length; ++j) {
+		for(int k=0; k<m1[0].length; ++k) {
+		    ret[i][j] += m1[i][k] * m2[k][j];
+		}
+	    }
+	}
+	return ret;
+    }
+    
+    private double[] zeroFill(double[] x) {
+	double[] ret = new double[2*this.D];
+	for(int i=0; i<ret.length; ++i) {
+	    ret[i] = i<x.length ? x[i] : 0;
+	}
+	return ret;
+    }
+    
+    private double c_in(int n, double[] a) {
+	for(int i=0; i<a.length; ++i) { a[i] *= 2; }
+	double[][] h = new double[][]{a};
+	double c;
+	double[][] hs = matMultiply(h, sigma.get(n));
+	double[][] transp = matTranspose(h);
+	c = matMultiply(hs, transp)[0][0];
+	c = Math.sqrt(c) * this.erfInverse;
+	return c;
+    }
+    
+    public ModelLP(int D, double time, int N, double Delta, double Umax, List<Point2D[]> obstacles, Point2D... points) throws IloException{
         this.D = D;
         this.N = N;
+	this.Delta = Delta;
+	double delta = this.Delta/(N*obstacles.size());
+	this.erfInverse = erfInv(1 - 2*delta);
+	sigmaMatrix(delta);
+
         // Create the enviroment
         cplex = new IloCplex();
 
@@ -128,8 +209,8 @@ public class ModelLP {
 		    }
 		    IloNumExpr expr = obstacle[i].scalProd(cplex, x[n]);
 		    IloNumExpr m = cplex.prod(10000, cplex.sum(-1, z[r][n][i]));
-		    cplex.addGe(expr, cplex.sum(obstacle[i].b, m), "obc("+r+","+n+","+i+")");
-		    System.out.println(obstacle[i].b);
+		    double c = c_in(n, zeroFill(obstacle[i].a));
+		    cplex.addGe(expr, cplex.sum(obstacle[i].b + c, m), "obc("+r+","+n+","+i+")");
 		}
 		cplex.addGe(z_sum, 1, "sum("+r+","+n+")");
 	    }

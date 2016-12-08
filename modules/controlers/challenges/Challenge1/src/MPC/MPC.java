@@ -109,7 +109,7 @@ public class MPC extends Module{
         double vx = readDbl("robot.vx");
         double vy = readDbl("robot.vy");
         
-        ModelLP model = new ModelLP(2, Mission_Time, Mission_Steps, 1.0, obstacles, points);
+        ModelLP model = new ModelLP(2, Mission_Time, Mission_Steps, 0.01, 1.0, obstacles, points);
         model.start_conditions(px, py, vx, vy);
         model.end_conditions(goals[n]);
         
