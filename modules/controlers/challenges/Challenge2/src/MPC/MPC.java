@@ -98,8 +98,8 @@ public class MPC extends Module{
     
     @Override
     public void loop() throws Throwable {
-	//int goalsToReturn = 2;
-	int goalsToReturn = goals.length-1;
+	int goalsToReturn = 2;
+	//int goalsToReturn = goals.length-1;
         for(int n=0; n<goals.length; n++){
 	    if(n>0 && n%goalsToReturn == 0) {
 		loopMPC(0);
@@ -131,12 +131,14 @@ public class MPC extends Module{
                 }
                 for(int t=0; t<target.length; t++){
                     scene.fillOval("plan", target[t][0]-0.02, target[t][1]-0.02, 0.04, 0.04);
+		    /*
 		    double x = target[t][0];
 		    double y = target[t][1];
 		    double rx = model.sigma.get(t)[0][0];
 		    double ry = model.sigma.get(t)[1][1];
 		    scene.setColor("uncertainty", Color.BLACK);
 		    scene.drawOval("uncertainty", x-rx, y-ry, 2*rx, 2*ry);
+		    */
                 }
             scene.endScene();
         }
