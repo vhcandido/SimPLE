@@ -24,7 +24,7 @@ public class ModelLP {
     public final int D;
     public final int N;
     private final double Delta;
-    private List<double[][]> sigma;
+    public List<double[][]> sigma;
     private final double erfInverse;
     
     protected final IloNumVar u[][];

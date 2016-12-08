@@ -21,7 +21,7 @@ import tsp.TSP;
  */
 public class MPC extends Module{
     private final double Mission_Time = 10.0;   //6.0
-    private final int Mission_Steps = 30;
+    private final int Mission_Steps = 20;
     
     private final Point2D[] points = new Point2D[]{
         new Point2D.Double(-2, -2),
@@ -98,8 +98,15 @@ public class MPC extends Module{
     
     @Override
     public void loop() throws Throwable {
+	//int goalsToReturn = 2;
+	int goalsToReturn = goals.length-1;
         for(int n=0; n<goals.length; n++){
-            loopMPC((n+1)%goals.length);
+	    if(n>0 && n%goalsToReturn == 0) {
+		loopMPC(0);
+	    }
+	    if(n+1 < goals.length) {
+		loopMPC((n+1)%goals.length);
+	    }
         }
     }
     private void loopMPC(int n) throws IloException, InterruptedException{
@@ -109,7 +116,7 @@ public class MPC extends Module{
         double vx = readDbl("robot.vx");
         double vy = readDbl("robot.vy");
         
-        ModelLP model = new ModelLP(2, Mission_Time, Mission_Steps, 0.01, 1.0, obstacles, points);
+        ModelLP model = new ModelLP(2, Mission_Time, Mission_Steps, 0.05, 1.0, obstacles, points);
         model.start_conditions(px, py, vx, vy);
         model.end_conditions(goals[n]);
         
@@ -124,6 +131,12 @@ public class MPC extends Module{
                 }
                 for(int t=0; t<target.length; t++){
                     scene.fillOval("plan", target[t][0]-0.02, target[t][1]-0.02, 0.04, 0.04);
+		    double x = target[t][0];
+		    double y = target[t][1];
+		    double rx = model.sigma.get(t)[0][0];
+		    double ry = model.sigma.get(t)[1][1];
+		    scene.setColor("uncertainty", Color.BLACK);
+		    scene.drawOval("uncertainty", x-rx, y-ry, 2*rx, 2*ry);
                 }
             scene.endScene();
         }
