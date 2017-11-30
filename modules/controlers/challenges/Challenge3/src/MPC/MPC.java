@@ -24,10 +24,10 @@ public class MPC extends Module{
     private final int Mission_Steps = 20;
     
     private final Point2D[] points = new Point2D[]{
-        new Point2D.Double(-2, -2),
-        new Point2D.Double(-2, 6),
+        new Point2D.Double(-8, -5),
+        new Point2D.Double(-8, 6),
         new Point2D.Double(8, 6),
-        new Point2D.Double(8, -2),
+        new Point2D.Double(8, -5),
     };
     
     private List<Point2D[]> obstacles = new ArrayList<>();
@@ -58,11 +58,20 @@ public class MPC extends Module{
 		new Point2D.Double(2, 2.1),
 	    }
 	);
+	obstacles.add(
+	    new Point2D[]{
+		new Point2D.Double(0, -2),
+		new Point2D.Double(-0.5, -3),
+		new Point2D.Double(-3, 1),
+		new Point2D.Double(-2.5, 2.5),
+	    }
+	);
         
         scene.beginScene(500);
             scene.setColor("safe", Color.GREEN);
             scene.drawPolygon("safe", points);
 	    for(Point2D[] obstacle:obstacles) {
+		scene.setColor("safe", Color.BLACK);
 		scene.drawPolygon("safe", obstacle);
 		Hyperplane hyper[] = Hyperplane.hyperplansFrom(false, obstacle);
 		for(int i=0; i<obstacle.length; ++i) {
@@ -88,6 +97,7 @@ public class MPC extends Module{
     private double goals[][] = new double[][]{
         {0, 0, 0, 0},
         {6, 0, 0, 1},
+	{-2, -3, 0, -1},
         {6, 4, -1, 0},
         {3, 2, 0, 0},
         {0, 4, 0, 1},
@@ -133,8 +143,8 @@ public class MPC extends Module{
                     scene.fillOval("plan", target[t][0]-0.02, target[t][1]-0.02, 0.04, 0.04);
 		    double x = target[t][0];
 		    double y = target[t][1];
-		    double rx = model.sigma.get(t)[0][0];
-		    double ry = model.sigma.get(t)[1][1];
+		    double rx = Math.sqrt(model.sigma.get(t)[0][0]);
+		    double ry = Math.sqrt(model.sigma.get(t)[1][1]);
 		    scene.setColor("uncertainty", Color.BLACK);
 		    scene.drawOval("uncertainty", x-rx, y-ry, 2*rx, 2*ry);
                 }

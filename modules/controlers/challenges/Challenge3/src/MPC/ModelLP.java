@@ -48,22 +48,29 @@ public class ModelLP {
     }
     
     private void sigmaMatrix(double x0_var, double dt) {
+	double covar = x0_var * x0_var;
 	double[][] sigma0 = new double[][]{
-	    {x0_var, 0, 0, 0},
-	    {0, x0_var, 0, 0},
-	    {0, 0, x0_var, 0},
-	    {0, 0, 0, x0_var},
+	    {covar, 0, 0, 0},
+	    {0, covar, 0, 0},
+	    {0, 0, 0, 0},
+	    {0, 0, 0, 0},
 	};
 	
 	double[][] A = A(this.D, dt);
 	
 	this.sigma = new ArrayList<>();
 	this.sigma.add(sigma0);
+	double[][] sigmaW0 = new double[sigma0.length][sigma0[0].length];
+	for(int i=0; i<sigma0.length; ++i) {
+	    for(int j=0; j<sigma0[0].length; ++j) {
+		sigmaW0[i][j] = sigma0[i][j] / 10;
+	    }
+	}
 	for(int n=1; n<N; ++n) {
 	    double[][] sigmaSum = matMultiply(A, this.sigma.get(n-1));
 	    double[][] transp = matTranspose(A);
 	    sigmaSum = matMultiply(sigmaSum, transp);
-	    sigmaSum = matSum(sigmaSum, sigma0);
+	    sigmaSum = matSum(sigmaSum, sigmaW0);
 	    this.sigma.add(sigmaSum);
 	}
     }
@@ -123,8 +130,8 @@ public class ModelLP {
         this.N = N;
 	this.Delta = Delta;
 	double delta = this.Delta/(N*obstacles.size());
-	this.erfInverse = erfInv(1 - 2*delta)/10;
-	sigmaMatrix(0.03, 0);
+	this.erfInverse = erfInv(1 - 2*delta);
+	sigmaMatrix(0.1, time/N);
 
         // Create the enviroment
         cplex = new IloCplex();

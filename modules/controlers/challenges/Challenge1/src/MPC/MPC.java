@@ -24,10 +24,10 @@ public class MPC extends Module{
     private final int Mission_Steps = 20;
     
     private final Point2D[] points = new Point2D[]{
-        new Point2D.Double(-2, -2),
-        new Point2D.Double(-2, 6),
+        new Point2D.Double(-8, -5),
+        new Point2D.Double(-8, 6),
         new Point2D.Double(8, 6),
-        new Point2D.Double(8, -2),
+        new Point2D.Double(8, -5),
     };
     
     private List<Point2D[]> obstacles = new ArrayList<>();
@@ -58,11 +58,20 @@ public class MPC extends Module{
 		new Point2D.Double(2, 2.1),
 	    }
 	);
+	obstacles.add(
+	    new Point2D[]{
+		new Point2D.Double(0, -2),
+		new Point2D.Double(-0.5, -3),
+		new Point2D.Double(-3, 1),
+		new Point2D.Double(-2.5, 2.5),
+	    }
+	);
         
         scene.beginScene(500);
             scene.setColor("safe", Color.GREEN);
             scene.drawPolygon("safe", points);
 	    for(Point2D[] obstacle:obstacles) {
+		scene.setColor("safe", Color.BLACK);
 		scene.drawPolygon("safe", obstacle);
 		Hyperplane hyper[] = Hyperplane.hyperplansFrom(false, obstacle);
 		for(int i=0; i<obstacle.length; ++i) {
@@ -88,6 +97,7 @@ public class MPC extends Module{
     private double goals[][] = new double[][]{
         {0, 0, 0, 0},
         {6, 0, 0, 1},
+	//{-2, -3, 0, -1},
         {6, 4, -1, 0},
         {3, 2, 0, 0},
         {0, 4, 0, 1},
@@ -99,14 +109,8 @@ public class MPC extends Module{
     @Override
     public void loop() throws Throwable {
 	//int goalsToReturn = 2;
-	int goalsToReturn = goals.length-1;
         for(int n=0; n<goals.length; n++){
-	    if(n>0 && n%goalsToReturn == 0) {
-		loopMPC(0);
-	    }
-	    if(n+1 < goals.length) {
-		loopMPC((n+1)%goals.length);
-	    }
+	    loopMPC((n+1)%goals.length);
         }
     }
     private void loopMPC(int n) throws IloException, InterruptedException{
